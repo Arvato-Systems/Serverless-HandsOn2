@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<h1>Introduction</h1>
+<p>This repository is used to support a Hands-On Session &quot;<em>Serverless and Cognitive Services</em>&quot;.</p>
+<p>After performing all steps you will be able to navigate a browser to a website, enter text in different languages and get translated (to german) text with a sentiment back. This data is shown on the page.</p>
+<h1>Getting Started</h1>
+<p>This guid consists of multiple parts:</p>
+<ol>
+<li><a href="#Install-software">Install required software</a></li>
+<li><a href="#Setup-Azure-Services">Setup Azure Services</a></li>
+<li><a href="#Deploy-Bits">Deploy bits to run the hands-on</a></li>
+</ol>
+<h1>Install software</h1>
+<p>All used software is available for free. You'll need to install:</p>
+<ol>
+<li>
+<p>.NET Core SDK</p>
+<p>The Extension for Visual Studio Code requires the <strong>.NET CORE SDK</strong> to be installed. Grab it <a href="https://www.microsoft.com/net/download">here</a>.</p>
+</li>
+<li>
+<p>Visual Studio Code</p>
+<p>Download and install VSCode from <a href="https://code.visualstudio.com">https://code.visualstudio.com</a>.</p>
+</li>
+<li>
+<p>Node.js</p>
+<p>Download and install Node 8.12+ from <a href="https://nodejs.org/">https://nodejs.org/</a>. You do not need to install <em>necessary tools</em> at the step the installer suggests.</p>
+</li>
+<li>
+<p>Extensions and Tools</p>
+<p>After you've installed VSCode you need to start it once, so it will react to the following link. Then install the <a href="vscode:extension/ms-azuretools.vscode-azurefunctions">Azure Functions Extension</a> to be able to deploy Code to a Function App by clicking on the green <strong>Install</strong> button within the extension.</p>
+<p>You need to install <a href="https://github.com/Azure/azure-functions-core-tools#installing">Azure Functions Core Tools (V2)</a>. Use NPM, <a href="https://chocolatey.org/">Chocolatey</a> or whatever you prefer :-) Part of the installation will be the Azure Cli.</p>
+</li>
+<li>
+<p>Git</p>
+<p>Download the <a href="https://git-scm.com/download/win">Windows Git client</a> to clone the repository with the sourcecode. The installation offers a lot of configuration. You can stick with the default settings.</p>
+</li>
+</ol>
+<h1>Setup Azure Services</h1>
+<p>To group the necessary services, it is recommended to use a separate resource group. In that group you need to create the following services:</p>
+<ul>
+<li><a href="#Storage-Account">Storage Account</a></li>
+<li><a href="#Cognitive-Services">Cognitive Services</a></li>
+<li><a href="#Function-App">Function App</a></li>
+</ul>
+<p>Logon to the <a href="https://portal.azure.com">Azure Portal</a> and navigate to the previously create Resource Group, or create a new one.</p>
+<h2>Storage Account</h2>
+<p>Create a storage account and set the Account kind to <strong>StorageV2 (general purpose v2)</strong>. Next activate the static website hosting feature (currently in preview).
+<img src="images/StorageAccount-StaticWebsite.png" alt="Settings Blade" title="Settings Blade"></p>
+<p>Please enable the <strong>Static website</strong> feature and set the Indes and Error document to <em>index.html</em>. This demo will not use a dedicated error document.</p>
+<h2>Cognitive Services</h2>
+<p>The solution uses the services <em>Text Translation</em> and <em>Text Analytics</em>. Both of them need to be create separately.</p>
+<p>Both can be create by clicking on add and entering &quot;Text&quot; as filter.</p>
+<p><img src="images/CognitiveServices-Create.png" alt="Create Cognitive Services" title="Create Cognitive Services"></p>
+<p>Create both services mentioned above and remember the keys.</p>
+<p><img src="images/CognitiveServices-TranslatorKeys.png" alt="Cognitive Services Keys" title="Cognitive Services Keys"></p>
+<p>The keys will be used later, to authenticate in order to use the services.</p>
+<h2>Function App</h2>
+<p>Part of the solution is an Azure Function that leverages two Cognitive services for a passed text.
+So let's create a Function App.</p>
+<p><img src="images/FunctionApp-Create.png" alt="Create a Function App" title="Create a Function App"></p>
+<p>Use the same Resource Group that you've been using for the storage account and Cognitive Services. Select <strong>Windows</strong>, <strong>Consumption Plan</strong> and <strong>JavaScript</strong>.</p>
+<p>Remember the keys you needed to write down in the previous chapter? Grab them, because we need them now.
+Since we do not want to use keys in the sourcecode itself, we'll place them in the application settings and access them through environmental variables. That way the can be changed on the fly and are not stored in a sourcecontrol system.</p>
+<hr>
+<p>In case you get a white page when navigating to your Function App, try another browser.</p>
+<hr>
+<p>Go to the Platform features blade from where you can access the Application and CORS settings.</p>
+<p><img src="images/FunctionApp-PlatformFeatures.png" alt="Function App Platform settings" title="Function App Platform settings"></p>
+<ol>
+<li>
+<p>Go the the application settings of the Function app and add the access keys in the <strong>Application Settings</strong> section.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ANALYTICS_TEXT_KEY</td>
+<td>20de52f548644252bfe152bef6bce675 &lt;-- this should be YOUR key</td>
+</tr>
+<tr>
+<td>TRANSLATOR_TEXT_KEY</td>
+<td>474261fde8894fd59a74e081665a30b2 &lt;-- this should be YOUR key</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>Set a CORS policy</p>
+<p>Otherwise the browser would query for data later on, but not show anthing of it and hide the error in the console.</p>
+<p>Remove all existing entries and add one <strong>ALLOWED ORIGINS</strong> with the value &quot;*&quot; (just a star).</p>
+</li>
+</ol>
+<h3>Further Reading</h3>
+<p>In case you want to know more (or create your own Function) the links will enable you to do so:</p>
+<ul>
+<li><a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-create-first-function-vs-code">https://docs.microsoft.com/en-us/azure/azure-functions/functions-create-first-function-vs-code</a></li>
+<li><a href="https://docs.microsoft.com/en-us/azure/cognitive-services/translator/quickstart-nodejs-translate">https://docs.microsoft.com/en-us/azure/cognitive-services/translator/quickstart-nodejs-translate</a></li>
+</ul>
+<h1>Deploy Bits</h1>
+<h2>Clone the repository</h2>
+<p>This step downloads all files from GitHub to a local folder on your machine. <code>git clone https://github.com/ArvatoSystems/Serverless-HandsOn2.git</code> will create a folder <strong>Serverless-HandsOn2</strong> in the current directory and download all files from the repository.</p>
+<p>Finally we can deploy our website and Function to see the magic happen.</p>
+<ol>
+<li>
+<p>chdir into the subfolder <strong>Serverless</strong> and type <code>code .</code> (or open the folder via Explorer context menu).</p>
+</li>
+<li>
+<p>Now you need to sign in to Azure and deploy the Function. <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-create-first-function-vs-code#sign-in-to-azure">This page</a> will help you with the necessary steps. (Watch for a small popup window at the lower right of VSCode)</p>
+</li>
+<li>
+<p>The newly deployed function has its own URL. We need it for the website to be able to leverage the function. So go to the function in your browser and copy the URL.</p>
+<p><img src="images/FunctionApp-FunctionURL.png" alt="Copy Function URL" title="Copy Function URL"></p>
+</li>
+<li>
+<p>Open the <strong>Website</strong> folder of the cloned repository with VSCode.</p>
+</li>
+<li>
+<p>Adjust the Function App URL in the <strong>variables.js</strong> files. Set the variable <strong>functionUrl</strong> to the value of your Function App.</p>
+</li>
+<li>
+<p>Navigate to the Storage account in your browser and click on the <strong>$web</strong> container.</p>
+<p><img src="images/StorageAccount-BlobService.png" alt="Click $web"></p>
+</li>
+<li>
+<p>Upload <strong>index.html</strong>, <strong>demo.css</strong>, <strong>demo.js</strong> and <strong>variables.js</strong> from the websites folder. You can use drag&amp;drop or the Upload button in the Portal.</p>
+</li>
+</ol>
+<p>That's it. Get back to the Storage account in the browser to copy the URL from the <em>Static website</em> blade.</p>
+</body>
+</html>

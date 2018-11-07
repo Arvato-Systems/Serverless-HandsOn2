@@ -1,0 +1,1 @@
+var functionUrl = 'https://{youraddress}';
