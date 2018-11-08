@@ -113,6 +113,6 @@ Finally we can deploy our website and Function to see the magic happen.
 7. Navigate to the Storage account in your browser and click on the **$web** container.
 
     ![Click $web](images/StorageAccount-BlobService.png)
-8. Upload **index.html**, **demo.css**, **demo.js** and **variables.js** from the websites folder. You can use drag&drop or the Upload button in the Portal.
+8. Upload **index.html**, **demo.min.css**, **demo.min.js** and **variables.js** from the websites folder. You can use drag&drop or the Upload button in the Portal.
 
 That's it. Get back to the Storage account in the browser to copy the URL from the *Static website* blade.
