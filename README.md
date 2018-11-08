@@ -40,10 +40,10 @@ To group the necessary services, it is recommended to use a separate resource gr
 Logon to the [Azure Portal](https://portal.azure.com) and navigate to the previously create Resource Group, or create a new one.
 
 ## Storage Account
-Create a storage account and set the Account kind to **StorageV2 (general purpose v2)**. Next activate the static website hosting feature (currently in preview).
+Create a storage account and set the Account kind to **StorageV2 (general purpose v2)** and use **LRS** as Replication. Next activate the static website hosting feature (currently in preview).
 ![Settings Blade](images/StorageAccount-StaticWebsite.png "Settings Blade")
 
-Please enable the **Static website** feature and set the Indes and Error document to *index.html*. This demo will not use a dedicated error document.
+Please enable the **Static website** feature and set the Indes and Error document to *index.html*. This demo will not use a dedicated error document. Hint: The endpoint field will be visible only after you click on the Enabled button.
 
 ## Cognitive Services
 The solution uses the services *Text Translation* and *Text Analytics*. Both of them need to be create separately.
@@ -103,15 +103,16 @@ This step downloads all files from GitHub to a local folder on your machine. ```
 Finally we can deploy our website and Function to see the magic happen.
 
 1. chdir into the subfolder **Serverless** and type ```code .``` (or open the folder via Explorer context menu).
-2. Now you need to sign in to Azure and deploy the Function. [This page](https://docs.microsoft.com/en-us/azure/azure-functions/functions-create-first-function-vs-code#sign-in-to-azure) will help you with the necessary steps. (Watch for a small popup window at the lower right of VSCode)
-3. The newly deployed function has its own URL. We need it for the website to be able to leverage the function. So go to the function in your browser and copy the URL.
+2. Open a terminal in VSCode ```View, Terminal``` and type ```npm install``` to download all required dependencies.
+3. Now you need to sign in to Azure and deploy the Function. [This page](https://docs.microsoft.com/en-us/azure/azure-functions/functions-create-first-function-vs-code#sign-in-to-azure) will help you with the necessary steps. (Watch for a small popup window at the lower right of VSCode)
+4. The newly deployed function has its own URL. We need it for the website to be able to leverage the function. So go to the function in your browser and copy the URL.
 
-    ![Copy Function URL](images/FunctionApp-FunctionURL.png "Copy Function URL")
-4. Open the **Website** folder of the cloned repository with VSCode.
-5. Adjust the Function App URL in the **variables.js** files. Set the variable **functionUrl** to the value of your Function App.
-6. Navigate to the Storage account in your browser and click on the **$web** container.
+    ![Copy Function URL](images/FunctionApp-FunctionUrl.png "Copy Function URL")
+5. Open the **Website** folder of the cloned repository with VSCode.
+6. Adjust the Function App URL in the **variables.js** files. Set the variable **functionUrl** to the value of your Function App.
+7. Navigate to the Storage account in your browser and click on the **$web** container.
 
     ![Click $web](images/StorageAccount-BlobService.png)
-7. Upload **index.html**, **demo.css**, **demo.js** and **variables.js** from the websites folder. You can use drag&drop or the Upload button in the Portal.
+8. Upload **index.html**, **demo.css**, **demo.js** and **variables.js** from the websites folder. You can use drag&drop or the Upload button in the Portal.
 
 That's it. Get back to the Storage account in the browser to copy the URL from the *Static website* blade.
