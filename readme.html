@@ -1,6 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<body>
 <h1>Introduction</h1>
 <p>This repository is used to support a Hands-On Session &quot;<em>Serverless and Cognitive Services</em>&quot;.</p>
 <p>After performing all steps you will be able to navigate a browser to a website, enter text in different languages and get translated (to german) text with a sentiment back. This data is shown on the page.</p>
@@ -45,9 +42,9 @@
 </ul>
 <p>Logon to the <a href="https://portal.azure.com">Azure Portal</a> and navigate to the previously create Resource Group, or create a new one.</p>
 <h2>Storage Account</h2>
-<p>Create a storage account and set the Account kind to <strong>StorageV2 (general purpose v2)</strong>. Next activate the static website hosting feature (currently in preview).
+<p>Create a storage account and set the Account kind to <strong>StorageV2 (general purpose v2)</strong> and use <strong>LRS</strong> as Replication. Next activate the static website hosting feature (currently in preview).
 <img src="images/StorageAccount-StaticWebsite.png" alt="Settings Blade" title="Settings Blade"></p>
-<p>Please enable the <strong>Static website</strong> feature and set the Indes and Error document to <em>index.html</em>. This demo will not use a dedicated error document.</p>
+<p>Please enable the <strong>Static website</strong> feature and set the Indes and Error document to <em>index.html</em>. This demo will not use a dedicated error document. Hint: The endpoint field will be visible only after you click on the Enabled button.</p>
 <h2>Cognitive Services</h2>
 <p>The solution uses the services <em>Text Translation</em> and <em>Text Analytics</em>. Both of them need to be create separately.</p>
 <p>Both can be create by clicking on add and entering &quot;Text&quot; as filter.</p>
@@ -110,11 +107,14 @@ Since we do not want to use keys in the sourcecode itself, we'll place them in t
 <p>chdir into the subfolder <strong>Serverless</strong> and type <code>code .</code> (or open the folder via Explorer context menu).</p>
 </li>
 <li>
+<p>Open a terminal in VSCode <code>View, Terminal</code> and type <code>npm install</code> to download all required dependencies.</p>
+</li>
+<li>
 <p>Now you need to sign in to Azure and deploy the Function. <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-create-first-function-vs-code#sign-in-to-azure">This page</a> will help you with the necessary steps. (Watch for a small popup window at the lower right of VSCode)</p>
 </li>
 <li>
 <p>The newly deployed function has its own URL. We need it for the website to be able to leverage the function. So go to the function in your browser and copy the URL.</p>
-<p><img src="images/FunctionApp-FunctionURL.png" alt="Copy Function URL" title="Copy Function URL"></p>
+<p><img src="images/FunctionApp-FunctionUrl.png" alt="Copy Function URL" title="Copy Function URL"></p>
 </li>
 <li>
 <p>Open the <strong>Website</strong> folder of the cloned repository with VSCode.</p>
@@ -131,5 +131,3 @@ Since we do not want to use keys in the sourcecode itself, we'll place them in t
 </li>
 </ol>
 <p>That's it. Get back to the Storage account in the browser to copy the URL from the <em>Static website</em> blade.</p>
-</body>
-</html>
