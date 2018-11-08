@@ -10,7 +10,7 @@ module.exports = async function (context, req) {
             var sentiment = await getSentiment(translatedText);
 
             context.res = {
-                status: 201,
+                status: 200,
                 body: JSON.stringify({ 'text': translatedText, 'sentiment': sentiment }),
                 headers: {
                     'Content-Type': 'application/json'
